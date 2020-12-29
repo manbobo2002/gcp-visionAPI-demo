@@ -1,6 +1,7 @@
 from __future__ import division, print_function
 # coding=utf-8
 import sys
+import io
 import os
 import glob
 import re
@@ -8,13 +9,12 @@ import numpy as np
 
 # Imports the Google Cloud client library
 from google.cloud import vision
+from google.cloud.vision import types
+
+
 # Instantiates a client
 client = vision.ImageAnnotatorClient()
 
-# Keras
-from keras.applications.imagenet_utils import preprocess_input, decode_predictions
-from keras.models import load_model
-from keras.preprocessing import image
 
 # Flask utils
 from flask import Flask, redirect, url_for, request, render_template
@@ -27,24 +27,20 @@ app = Flask(__name__)
 # You can also use pretrained model from Keras
 # Check https://keras.io/applications/
 
-from keras.applications.resnet50 import ResNet50
-model = ResNet50(weights='imagenet')
-print('Model loaded. Check http://127.0.0.1:5000/')
 
+def model_predict(img_path):
 
-def model_predict(img_path, model):
-    img = image.load_img(img_path, target_size=(224, 224))
-
+    print(img_path)
+    file_name = os.path.abspath(img_path)
     # Loads the image into memory
-    with io.open(img, 'rb') as image_file:
+    with io.open(file_name, 'rb') as image_file:
         content = image_file.read()
 
-    image = vision.Image(content=content)
-
+    image = types.Image(content=content)
     # Performs label detection on the image file
     response = client.label_detection(image=image)
     labels = response.label_annotations
-
+    print(labels)
 
     return labels
 
@@ -68,18 +64,15 @@ def upload():
         f.save(file_path)
 
         # Make prediction
-        preds = model_predict(file_path, model)
+        preds = model_predict(file_path)
 
-        # Process your result for human
-        # pred_class = preds.argmax(axis=-1)            # Simple argmax
-        # pred_class = decode_predictions(preds, top=1)   # ImageNet Decode
-        # result = str(pred_class[0][0][1])               # Convert to string
         output=""
-        for s in preds:
-            if s == preds[-1]:
-                output=output+s[1]+" with "+str(s[2])
+        for label in preds:
+            print(label.description)
+            if label == preds[-1]:
+                output=output+label.description+" with "+str(label.score)
             else:
-                output=output+s[1]+" with "+str(s[2])+", "
+                output=output+label.description+" with "+str(label.score)+","
         return output
     return None
 

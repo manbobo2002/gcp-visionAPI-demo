@@ -1,0 +1,1 @@
+gcloud iam service-accounts delete vision-api-account@${PROJECT_ID}.iam.gserviceaccount.com

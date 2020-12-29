@@ -1,3 +1,4 @@
 uploads/*.jpg
 uploads/*.png
 models/*.h5
+vision-api-key.json
