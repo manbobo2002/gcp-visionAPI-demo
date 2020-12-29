@@ -16,9 +16,7 @@
 - Check http://localhost:5000
 - Done! :tada:
 
-<p align="center">
-  <img src="https://storage.googleapis.com/ustfypcnn/model_api.PNG" width="600px" alt="">
-</p>
+![image](https://github.com/manbobo2002/gcp-visionAPI-demo/blob/master/vision-api-demo.gif)  
 
 ------------------
 
