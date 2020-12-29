@@ -26,28 +26,20 @@
 
 ### Clone the repo
 ```shell
-$ git clone https://github.com/manbobo2002/CNN_flask.git
+$ git clone https://github.com/manbobo2002/gcp-visionAPI-demo.git
 ```
 
-### Download the model and move to the model dir
-```shell
-$ wget [your_model_path]/inception.h5
-$ mv inception.h5 ./CNN_flask/models/
-```
-
-### Install requirements
+### Setup
 
 ```shell
-$ pip install -r requirements.txt
+$ sh setup.sh
 ```
 
-Make sure you have the following installed:
-- tensorflow
-- keras
-- flask
-- pillow
-- h5py
-- gevent
+### Cleanup
+
+```shell
+$ sh cleanup.sh
+```
 
 ### Run with Python
 
